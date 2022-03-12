@@ -1546,7 +1546,7 @@ void Smoke(){
     lcd.setCursor(0, 1);
     lcd.print("MEAT ");
     displayTemp(tc2.readC());  //read the 2nd TC and print the temperature
-    if ( MTemp > tc2.readC()) { Serial.println("ON");analogWrite(SSRPin, 100); } else { Serial.println("Off"); analogWrite(SSRPin, 0); } 
+    if ( MTemp > tc2.readC()) { Serial.println("ON"); } else { Serial.println("Off"); analogWrite(SSRPin, 0); } 
     if ( NTime == 0 ) { STOP();}
     static uint32_t oldtime=millis();
 
