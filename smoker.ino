@@ -20,6 +20,8 @@ float Time = 0;
 float NTime = 0;
 float tmp0=0;
 int Number =0;
+int heat = 0;
+int pulse = 0;
 
 //MAX6675 SPI pin definitions
 #define csTC1  D8                //chip select for MAX6675 #1
@@ -52,7 +54,8 @@ void setup() {
   }
 
   keyPad.loadKeyMap(keymap); 
-  analogWrite(SSRPin, 0);      
+  
+digitalWrite(SSRPin, LOW);      
  delay(3000);
 }
 
@@ -1538,15 +1541,19 @@ void Smoke(){
   
     Serial.print("tc1: ");
     displayTemp(tc1.readC()); //read the 1st TC and print the temperature
-    if ( OTemp > tc1.readC()) { Serial.println("ON"); analogWrite(SSRPin, 100); } else {Serial.println("Off"); analogWrite(SSRPin, 0);}
+    if ( OTemp > tc1.readC()) { Serial.println("ON"); pulse=1; } else {Serial.println("Off"); heat =0;pulse =0; digitalWrite(SSRPin, LOW);}
     lcd.print(HRS);lcd.print("h");lcd.print(MIN, 0);
+    if (pulse ==1) {
+    if (heat == 0 ) {digitalWrite(SSRPin, HIGH); delay(1000); heat =1;} 
+    }
   lcd.print("m");
   Serial.print(NTime);
     Serial.print("tc2: ");
     lcd.setCursor(0, 1);
     lcd.print("MEAT ");
     displayTemp(tc2.readC());  //read the 2nd TC and print the temperature
-    if ( MTemp > tc2.readC()) { Serial.println("ON"); } else { Serial.println("Off"); analogWrite(SSRPin, 0); } 
+    if ( MTemp > tc2.readC()) { Serial.println("ON"); } else { Serial.println("Off");digitalWrite(SSRPin, LOW);delay(700); heat =0;pulse=0;} 
+    
     if ( NTime == 0 ) { STOP();}
     static uint32_t oldtime=millis();
 
@@ -2133,7 +2140,7 @@ void STOP(){
   while (setting = 1){
     lcd.clear();
     lcd.print("FINISHED ");
-    analogWrite(SSRPin, 0);
+    digitalWrite(SSRPin, LOW);
     delay(500);
   }
 }
@@ -2146,7 +2153,7 @@ int preheat = 1;
   while ( preheat ==1){
     float TEMP = tc1.readC();
   lcd.setCursor(0,1); lcd.print(TEMP); lcd.print("\337C    "); 
-  if ( OTemp > TEMP) { Serial.println("ON");analogWrite(SSRPin, 100); } else { analogWrite(SSRPin, 0); Serial.println("READY FOR USE");lcd.clear(); lcd.setCursor(0,0); lcd.print("  READY FOR USE ");}
+  if ( OTemp > TEMP) { Serial.println("ON");digitalWrite(SSRPin, HIGH); } else { digitalWrite(SSRPin, LOW); Serial.println("READY FOR USE");lcd.clear(); lcd.setCursor(0,0); lcd.print("  READY FOR USE ");}
   delay(300);
   if (keyPad.isPressed()){
                  char ch1 = keyPad.getChar();
