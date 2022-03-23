@@ -8,4 +8,6 @@ it has about 100 presets for beef, pork, poultry and fish you can also manually 
 
 ![smoked  pork hock ](https://github.com/krywenko/smoker/blob/main/DSC05971.JPG)
 
+cook using pork -> Butt ( oven temp 107c) ->  default ( medium colour -78c )  -> default cook time ( 13 hrs) -- came out  at perfection 
+
 
